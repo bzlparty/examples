@@ -1,0 +1,21 @@
+load("@aspect_rules_js//js:defs.bzl", "js_run_devserver")
+load("@npm//:@web/dev-server/package_json.bzl", "bin")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+
+npm_link_all_packages(name = "node_modules")
+
+bin.wds_binary(
+    name = "web_dev_server",
+)
+
+js_run_devserver(
+    name = "server",
+    args = [
+        "--node-resolve",
+    ],
+    data = [
+        ":index.html",
+        ":script.js",
+    ],
+    tool = ":web_dev_server",
+)
