@@ -1,0 +1,6 @@
+load("//app:defs.bzl", "ts_library")
+
+ts_library(
+    name = "components",
+    visibility = ["//app:__subpackages__"],
+)

@@ -1,0 +1,58 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+load("@npm//:defs.bzl", "npm_link_all_packages")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load(":defs.bzl", "bun_image", "devserver", "ts_library")
+
+exports_files([
+    "tsconfig.json",
+    "package.json",
+])
+
+npm_link_all_packages(name = "node_modules")
+
+# npm_link_package(
+#   name = "node_modules/@frontless-example/testing",
+#   src = "//internal/testing",
+# )
+
+js_library(
+    name = "tsconfig",
+    srcs = [":tsconfig.json"],
+    visibility = ["//app:__subpackages__"],
+)
+
+ts_library(
+    name = "main",
+    srcs = ["main.ts"],
+    visibility = ["//visibility:private"],
+)
+
+devserver(
+    name = "app",
+    data = [
+        "main",
+        "//app/pages",
+    ],
+    entry_point = "main.ts",
+    tool = "//tools:tsx",
+)
+
+pkg_files(
+    name = "configs",
+    srcs = [
+        ":package.json",
+        ":tsconfig.json",
+    ],
+    prefix = package_name(),
+)
+
+bun_image(
+    name = "oci_app",
+    srcs = [
+        ":configs",
+        ":files",
+        "//app/components:files",
+        "//app/pages:files",
+    ],
+    workdir = "/app",
+)

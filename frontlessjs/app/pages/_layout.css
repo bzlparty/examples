@@ -1,0 +1,5 @@
+/* No need to include this file. Content of this file will be automatically appended to the main css file.*/
+#main {
+  min-height: 80vh;
+  display: flex;
+}

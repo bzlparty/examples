@@ -1,0 +1,9 @@
+load("//app:defs.bzl", "ts_library")
+
+ts_library(
+    name = "pages",
+    visibility = ["//app:__pkg__"],
+    deps = [
+        "//app/components",
+    ],
+)

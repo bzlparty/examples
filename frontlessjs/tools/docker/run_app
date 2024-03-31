@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+bazel build @@//app:oci_app_tarball
+bazel run @@//app:oci_app_tarball
+
+docker run --rm --publish="3000:3000" frontless_example-app:latest

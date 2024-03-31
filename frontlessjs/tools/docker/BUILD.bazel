@@ -1,0 +1,8 @@
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
+
+write_source_file(
+    name = "generate_run_app",
+    executable = True,
+    in_file = "//app:run_oci_app",
+    out_file = "run_app",
+)

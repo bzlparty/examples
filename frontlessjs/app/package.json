@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "frontlessjs": "0.1.7"
+  },
+  "devDependencies": {
+    "@frontless-example/testing": "workspace:*",
+    "@types/jsdom": "21.1.6"
+  }
+}

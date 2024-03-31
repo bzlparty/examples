@@ -1,0 +1,57 @@
+module(
+    name = "frontless_example",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "aspect_rules_js", version = "1.39.1")
+bazel_dep(name = "rules_nodejs", version = "6.0.5")
+bazel_dep(name = "rules_oci", version = "1.7.4")
+bazel_dep(name = "rules_pkg", version = "0.10.1")
+bazel_dep(name = "aspect_rules_ts", version = "2.2.0")
+bazel_dep(name = "aspect_bazel_lib", version = "2.6.1")
+
+bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+oci.pull(
+    name = "distroless_bun",
+    digest = "sha256:5c22d37eabc0ad33f6736fb4991b34db4e0fafe8960ab24acf47fb988b884fe0",
+    image = "docker.io/oven/bun",
+    platforms = [
+        "linux/amd64",
+        "linux/arm64",
+        "unknown/unknown",
+    ],
+)
+use_repo(oci, "distroless_bun")
+
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+node.toolchain(node_version = "20.9.0")
+
+npm = use_extension(
+    "@aspect_rules_js//npm:extensions.bzl",
+    "npm",
+    dev_dependency = True,
+)
+npm.npm_translate_lock(
+    name = "npm",
+    data = [
+        "//:package.json",
+        "//:pnpm-workspace.yaml",
+        "//app:package.json",
+        "//internal/testing:package.json",
+        "//tools:package.json",
+    ],
+    npmrc = "//:.npmrc",
+    pnpm_lock = "//:pnpm-lock.yaml",
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+use_repo(npm, "npm")
+
+rules_ts_ext = use_extension(
+    "@aspect_rules_ts//ts:extensions.bzl",
+    "ext",
+    dev_dependency = True,
+)
+rules_ts_ext.deps()
+use_repo(rules_ts_ext, "npm_typescript")
