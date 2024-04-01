@@ -29,3 +29,6 @@ jobs:
           --bazelrc=${{ github.workspace }}/.bazelrc
           --bazelrc=${{ github.workspace }}/.github/workflows/ci.bazelrc
           test //...
+      - name: on fail
+        if: ${{ failure() }}
+        run: cat bazel-bin/internal/dirlist.out; cat bazel-bin/internal/README.md
