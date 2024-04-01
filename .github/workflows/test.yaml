@@ -1,0 +1,31 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  XDG_CACHE_HOME: ~/.cache/bazel-repo
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mount bazel caches
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/bazel
+            ~/.cache/bazel-repo
+          key: bazel-cache-${{ hashFiles('BUILD.bazel', 'WORKSPACE', 'MODULE.bazel', 'internal/BUILD.bazel', '**/*.bzl') }}
+          restore-keys: bazel-cache-
+      - name: bazel test //...
+        run: >
+          bazel
+          --bazelrc=${{ github.workspace }}/.bazelrc
+          --bazelrc=${{ github.workspace }}/.github/workflows/ci.bazelrc
+          test //...
