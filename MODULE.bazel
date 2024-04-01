@@ -3,4 +3,6 @@ module(
     version = "0.0.0",
 )
 
+bazel_dep(name = "aspect_bazel_lib", version = "2.6.1")
+
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)

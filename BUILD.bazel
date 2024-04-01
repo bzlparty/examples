@@ -1,4 +1,15 @@
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
 load("@buildifier_prebuilt//:rules.bzl", "buildifier", "buildifier_test")
+
+exports_files(["README.md"])
+
+write_source_files(
+    name = "source_files",
+    files = {
+        ":README.md": "//internal:README.md",
+        ":.bazelignore": "//internal:dirlist",
+    },
+)
 
 buildifier(
     name = "format",

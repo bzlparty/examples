@@ -1,0 +1,17 @@
+load("//internal:defs.bzl", "dirlist", "readme")
+
+dirlist(
+    name = "dirlist",
+    exclude = [
+        ".git",
+        "internal",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+readme(
+    name = "readme",
+    src = ":_README.md",
+    dirlist = ":dirlist",
+    visibility = ["//visibility:public"],
+)

@@ -4,9 +4,7 @@
 
 ## Projects
 
-- [frontlessjs](./frontlessjs/)
-- [lit-simple](./lit-simple/)
-- [web-dev-server](./web-dev-server/)
+<!-- LINKLIST -->
 
 ## License
 
