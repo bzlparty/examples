@@ -3,6 +3,7 @@ load("//internal:defs.bzl", "dirlist", "readme")
 dirlist(
     name = "dirlist",
     exclude = [
+        "~",  # somehow this appears in ci runs
         ".git",
         "internal",
     ],
